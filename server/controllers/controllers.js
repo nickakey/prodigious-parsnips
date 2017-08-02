@@ -1,4 +1,14 @@
 const models = require('../../db/models');
+const geolib = require('geolib');
+const distances = {
+  1: 30,
+  2: 152,
+  3: 609,
+  4: 3218,
+  5: 8046,
+  6: 16093,
+  7: 40233
+};
 
 module.exports.turnOnSnoozeByUserId = (userid) => { 
   return new Promise((resolve, reject) => {
@@ -194,11 +204,7 @@ module.exports.getNotificationsByUserId = (userid, geoLocation) => {
               data.relations.user_preferences.models.forEach((userPref, i)=>{
                 results.messages[i].forEach((message, i)=>{
                   if (userPref.attributes.upvote_threshold < message.attributes.upvotes) {
-                    const coords = {};
-                    coords.longitude = JSON.parse(message.attributes.geotag).longitude;
-                    coords.latitude = JSON.parse(message.attributes.geotag).latitude;
-                    
-                    console.log('this is a geo tag on a message ', coords);
+                    //in future iterations, we can add in a location buffer conditional here
                     results.messagesToNotify.push(message);
                   }
                 });

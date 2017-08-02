@@ -24,6 +24,7 @@
     "express": "^4.15.2",
     "express-session": "^1.15.1",
     "faker": "^4.1.0",
+    "geolib": "^2.0.22",
     "grunt-pg": "https://github.com/watsoncj/grunt-pg.git",
     "knex": "^0.12.9",
     "morgan": "^1.8.1",
