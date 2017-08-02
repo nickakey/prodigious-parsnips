@@ -177,31 +177,33 @@ module.exports.createComment = (userid, title, text, geotag, postid) => {
 };
 
 module.exports.getNotificationsByUserId = (userid, geoLocation) => { 
-  const results = {};
+  const results = {messages: [], subids: [], messagesToNotify: []};
   return new Promise((resolve, reject) => {
     models.Users.where('id', userid)
-    .fetch({withRelated: ['subreddits']})
+    .fetch({withRelated: ['subreddits', 'user_preferences', 'users_subreddits_prefs']})
     .then(data => {
         data.relations.subreddits.models.forEach((modelbase)=>{
-          if (!results.subids) {
-            results.subids = [];
-          }
           results.subids.push(modelbase.attributes.id);
         });
         results.subids.forEach((subid, index)=>{
           models.Messages.where('subreddit_id', subid)
           .fetchAll()
           .then((messages)=>{
-            // console.log('this is the length of results subids ', results.subids.length)
-            // console.log('this is the index  ', index)
-            if (!results.messages) {
-              results.messages = [];
-            }
             results.messages.push(messages);
             if (index === results.subids.length - 1) {
-              console.log('we in here boy')
-              console.log('this is reuslts messages ', results)
-              resolve(results.messages);      
+              data.relations.user_preferences.models.forEach((userPref, i)=>{
+                results.messages[i].forEach((message, i)=>{
+                  if (userPref.attributes.upvote_threshold < message.attributes.upvotes) {
+                    const coords = {};
+                    coords.longitude = JSON.parse(message.attributes.geotag).longitude;
+                    coords.latitude = JSON.parse(message.attributes.geotag).latitude;
+                    
+                    console.log('this is a geo tag on a message ', coords);
+                    results.messagesToNotify.push(message);
+                  }
+                });
+              });
+              resolve(results.messagesToNotify);
             }
           });
         });  
