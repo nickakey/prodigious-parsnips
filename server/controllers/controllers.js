@@ -204,8 +204,15 @@ module.exports.getNotificationsByUserId = (userid, geoLocation) => {
               data.relations.user_preferences.models.forEach((userPref, i)=>{
                 results.messages[i].forEach((message, i)=>{
                   if (userPref.attributes.upvote_threshold < message.attributes.upvotes) {
+                    const notification = {};
+                    notification.title = message.attributes.title;
+                    notification.messageid = message.attributes.id;
+                    notification.geotag = message.attributes.geotag;
+                    notification.location_threshold = userPref.attributes.location_threshold;
+                    // console.log('this is the location threshold hopefully ', userPref.attributes)
+                    // console.log('this is message! ', message);
                     //in future iterations, we can add in a location buffer conditional here
-                    results.messagesToNotify.push(message);
+                    results.messagesToNotify.push(notification);
                   }
                 });
               });
