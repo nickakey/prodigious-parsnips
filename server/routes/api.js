@@ -102,8 +102,10 @@ router.route('/messages')
 
 router.route('/notifications')
   .get((req, res) => {
-    //this will load all the notifications based on a user id
-    res.status(200).send('this is notifications!');
+    controllers.getNotificationsByUserId(req.query.userId, req.query.geoLocation)
+    .then((data)=>{
+      res.status(200).send(data);
+    });
   });
 
 

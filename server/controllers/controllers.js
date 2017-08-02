@@ -176,13 +176,36 @@ module.exports.createComment = (userid, title, text, geotag, postid) => {
   });
 };
 
-module.exports.getNotificationsByUserId = userid => { 
+module.exports.getNotificationsByUserId = (userid, geoLocation) => { 
+  const results = {};
   return new Promise((resolve, reject) => {
-    models.Notifications.where('user_id', userid)
-    .fetch({withRelated: 'messages'})
+    models.Users.where('id', userid)
+    .fetch({withRelated: ['subreddits']})
     .then(data => {
-      resolve(data);
-    })
+        data.relations.subreddits.models.forEach((modelbase)=>{
+          if (!results.subids) {
+            results.subids = [];
+          }
+          results.subids.push(modelbase.attributes.id);
+        });
+        results.subids.forEach((subid, index)=>{
+          models.Messages.where('subreddit_id', subid)
+          .fetchAll()
+          .then((messages)=>{
+            // console.log('this is the length of results subids ', results.subids.length)
+            // console.log('this is the index  ', index)
+            if (!results.messages) {
+              results.messages = [];
+            }
+            results.messages.push(messages);
+            if (index === results.subids.length - 1) {
+              console.log('we in here boy')
+              console.log('this is reuslts messages ', results)
+              resolve(results.messages);      
+            }
+          });
+        });  
+     })
     .catch(err => {
       reject(err);
     });

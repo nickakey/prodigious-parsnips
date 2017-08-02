@@ -9,7 +9,7 @@ const Message = db.Model.extend({
     return this.hasMany('Upvote');
   },
   users: function() {
-    return this.hasOne('User');
+    return this.hasOne('User', 'user_id');
   }
 });
 

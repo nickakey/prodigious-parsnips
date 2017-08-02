@@ -40,7 +40,7 @@ exports.up = function(knex, Promise) {
     knex.schema.createTableIfNotExists('Message', function(table) {
       table.increments('id').unsigned().primary();
       table.string('text', 255).notNullable();
-      table.string('title', 50).notNullable();
+      table.string('title', 100).notNullable();
       table.string('type').notNullable();
       table.integer('post_id');
       table.string('geotag').notNullable();
