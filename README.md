@@ -1,33 +1,13 @@
-# Project Name
+# Scout
 
-The project description
+IOS Application to notify users of interesting geolocations in their city.
 
 ## Team
 
-- teamMember
-- teamMember
-- teamMember
-- teamMember
-
-## Roadmap
-
-View the project roadmap [here](LINK_TO_DOC)
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
-
-# Table of Contents
-
-1. [Usage](#Usage)
-1. [Requirements](#requirements)
-1. [Development](#development)
-    1. [Installing Dependencies](#installing-dependencies)
-    1. [Tasks](#tasks)
-
-## Usage
-
-> Some usage instructions
+- Benjamin Bucca
+- Rob St. Lezin
+- Derek Johnson
+- Nick Akey
 
 ## Requirements
 
@@ -39,14 +19,10 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
 ## Development
 
 ### Installing System Dependencies
-
 ```
 brew install yarn
 brew install redis
 brew install postgresql
-```
-
-Yarn is a replacement for npm. It's faster and *guarantees* consistency -- as you deploy your code in various environments, you won't run the risk of slight variations in what gets installed.
 
 ### Install Project Dependencies
 
@@ -101,6 +77,6 @@ To run server: `yarn run start`
 
 To run tests: `yarn run test`
 
-To run your redis server for the session store `redis-server`
+To run redis server for the session store `redis-server`
 
 
